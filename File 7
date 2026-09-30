@@ -1,0 +1,111 @@
+from flask import Flask, render_template, request, jsonify
+
+from weather_api import get_weather
+from ai_analysis import analyze_weather
+
+from database import (
+    create_database,
+    save_weather,
+    get_history
+)
+
+
+app = Flask(__name__)
+
+
+# Create database when application starts
+
+create_database()
+
+
+# Home page
+
+@app.route("/")
+def home():
+
+    return render_template("index.html")
+
+
+# Weather API route
+
+@app.route("/api/weather")
+def weather():
+
+    city = request.args.get("city")
+
+    if not city:
+
+        return jsonify({
+            "error": "Please enter a city name"
+        }), 400
+
+
+    weather_data = get_weather(city)
+
+
+    if "error" in weather_data:
+
+        return jsonify(weather_data), 400
+
+
+    # AI analysis
+
+    analysis = analyze_weather(weather_data)
+
+
+    # Save data
+
+    save_weather(weather_data)
+
+
+    # Combine weather + AI data
+
+    result = {
+
+        "weather": weather_data,
+
+        "analysis": analysis
+
+    }
+
+
+    return jsonify(result)
+
+
+# History route
+
+@app.route("/api/history")
+def history():
+
+    data = get_history()
+
+    history_list = []
+
+
+    for row in data:
+
+        history_list.append({
+
+            "city": row[0],
+
+            "temperature": row[1],
+
+            "humidity": row[2],
+
+            "condition": row[3],
+
+            "searched_at": row[4]
+
+        })
+
+
+    return jsonify(history_list)
+
+
+if __name__ == "__main__":
+
+    app.run(
+        debug=True,
+        host="127.0.0.1",
+        port=5000
+    )
