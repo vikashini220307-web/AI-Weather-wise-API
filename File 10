@@ -1,0 +1,209 @@
+async function getWeather() {
+
+    const city =
+        document.getElementById("cityInput").value.trim();
+
+
+    const loading =
+        document.getElementById("loading");
+
+    const error =
+        document.getElementById("error");
+
+    const result =
+        document.getElementById("weatherResult");
+
+
+    if (city === "") {
+
+        error.innerHTML =
+            "Please enter a city name.";
+
+        return;
+
+    }
+
+
+    loading.style.display = "block";
+
+    error.innerHTML = "";
+
+    result.style.display = "none";
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/weather?city=${encodeURIComponent(city)}`
+            );
+
+
+        const data =
+            await response.json();
+
+
+        loading.style.display = "none";
+
+
+        if (!response.ok) {
+
+            error.innerHTML =
+                data.error || "Something went wrong.";
+
+            return;
+
+        }
+
+
+        const weather =
+            data.weather;
+
+        const analysis =
+            data.analysis;
+
+
+        document.getElementById("cityName").innerText =
+            `${weather.city}, ${weather.country}`;
+
+
+        document.getElementById("description").innerText =
+            weather.description;
+
+
+        document.getElementById("temperature").innerText =
+            `${weather.temperature} °C`;
+
+
+        document.getElementById("humidity").innerText =
+            `${weather.humidity}%`;
+
+
+        document.getElementById("windSpeed").innerText =
+            `${weather.wind_speed} m/s`;
+
+
+        document.getElementById("feelsLike").innerText =
+            `${weather.feels_like} °C`;
+
+
+        document.getElementById("condition").innerText =
+            weather.condition;
+
+
+        document.getElementById("pressure").innerText =
+            `${weather.pressure} hPa`;
+
+
+        document.getElementById("temperatureMessage").innerText =
+            analysis.temperature_message;
+
+
+        document.getElementById("humidityMessage").innerText =
+            analysis.humidity_message;
+
+
+        document.getElementById("conditionMessage").innerText =
+            analysis.condition_message;
+
+
+        const recommendationList =
+            document.getElementById("recommendations");
+
+
+        recommendationList.innerHTML = "";
+
+
+        analysis.recommendations.forEach(
+            function(recommendation) {
+
+                const li =
+                    document.createElement("li");
+
+                li.innerText =
+                    recommendation;
+
+                recommendationList.appendChild(li);
+
+            }
+        );
+
+
+        result.style.display = "block";
+
+
+    } catch (errorObject) {
+
+        loading.style.display = "none";
+
+        error.innerHTML =
+            "Unable to connect to the server.";
+
+        console.error(errorObject);
+
+    }
+
+}
+
+
+
+async function loadHistory() {
+
+    const historyDiv =
+        document.getElementById("history");
+
+
+    try {
+
+        const response =
+            await fetch("/api/history");
+
+
+        const history =
+            await response.json();
+
+
+        if (history.length === 0) {
+
+            historyDiv.innerHTML =
+                "<p>No search history available.</p>";
+
+            return;
+
+        }
+
+
+        let html = "<ul>";
+
+
+        history.forEach(function(item) {
+
+            html += `
+                <li>
+                    <strong>${item.city}</strong>
+                    -
+                    ${item.temperature} °C
+                    -
+                    ${item.condition}
+                    -
+                    ${item.searched_at}
+                </li>
+            `;
+
+        });
+
+
+        html += "</ul>";
+
+
+        historyDiv.innerHTML = html;
+
+
+    } catch (error) {
+
+        historyDiv.innerHTML =
+            "<p>Unable to load history.</p>";
+
+    }
+
+}
