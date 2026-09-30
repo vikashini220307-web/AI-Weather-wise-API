@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AI WeatherWise</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>🌤️ AI WeatherWise</h1>
+
+    <p>
+        Smart Weather Information and AI-Based Recommendation System
+    </p>
+
+</header>
+
+
+<main>
+
+
+<section class="search-section">
+
+    <h2>Check Weather</h2>
+
+    <div class="search-box">
+
+        <input
+            type="text"
+            id="cityInput"
+            placeholder="Enter city name"
+        >
+
+        <button onclick="getWeather()">
+            Search
+        </button>
+
+    </div>
+
+</section>
+
+
+
+<section id="loading">
+
+    <p>Loading weather information...</p>
+
+</section>
+
+
+
+<section id="error">
+
+</section>
+
+
+
+<section id="weatherResult">
+
+
+<div class="location">
+
+    <h2 id="cityName"></h2>
+
+    <p id="description"></p>
+
+</div>
+
+
+
+<div class="weather-container">
+
+
+<div class="weather-card">
+
+    <h3>🌡️ Temperature</h3>
+
+    <p id="temperature">--</p>
+
+</div>
+
+
+
+<div class="weather-card">
+
+    <h3>💧 Humidity</h3>
+
+    <p id="humidity">--</p>
+
+</div>
+
+
+
+<div class="weather-card">
+
+    <h3>🌬️ Wind Speed</h3>
+
+    <p id="windSpeed">--</p>
+
+</div>
+
+
+
+<div class="weather-card">
+
+    <h3>🌡️ Feels Like</h3>
+
+    <p id="feelsLike">--</p>
+
+</div>
+
+
+
+<div class="weather-card">
+
+    <h3>☁️ Condition</h3>
+
+    <p id="condition">--</p>
+
+</div>
+
+
+
+<div class="weather-card">
+
+    <h3>Pressure</h3>
+
+    <p id="pressure">--</p>
+
+</div>
+
+
+</div>
+
+
+
+<section class="ai-section">
+
+    <h2>🤖 AI Weather Analysis</h2>
+
+
+    <p id="temperatureMessage"></p>
+
+    <p id="humidityMessage"></p>
+
+    <p id="conditionMessage"></p>
+
+
+    <h3>Recommendations</h3>
+
+    <ul id="recommendations"></ul>
+
+</section>
+
+
+</section>
+
+
+
+<section class="history-section">
+
+    <h2>📋 Recent Search History</h2>
+
+    <button onclick="loadHistory()">
+        View History
+    </button>
+
+
+    <div id="history"></div>
+
+</section>
+
+
+</main>
+
+
+
+<footer>
+
+    <p>
+        AI WeatherWise | Naan Mudhalvan Project
+    </p>
+
+</footer>
+
+
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+
+</body>
+
+</html>
