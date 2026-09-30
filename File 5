@@ -1,0 +1,109 @@
+def analyze_weather(weather):
+
+    temperature = weather["temperature"]
+    humidity = weather["humidity"]
+    condition = weather["condition"].lower()
+    wind_speed = weather["wind_speed"]
+
+    recommendations = []
+
+    # Temperature analysis
+
+    if temperature >= 35:
+
+        temperature_message = "It is very hot today."
+
+        recommendations.append(
+            "Drink plenty of water and avoid direct sunlight."
+        )
+
+    elif temperature >= 30:
+
+        temperature_message = "The temperature is warm."
+
+        recommendations.append(
+            "Stay hydrated and prefer light clothing."
+        )
+
+    elif temperature >= 20:
+
+        temperature_message = "The temperature is comfortable."
+
+        recommendations.append(
+            "The weather is suitable for normal outdoor activities."
+        )
+
+    else:
+
+        temperature_message = "The temperature is cool."
+
+        recommendations.append(
+            "Carry a light jacket if you are going outside."
+        )
+
+
+    # Humidity analysis
+
+    if humidity >= 80:
+
+        humidity_message = "Humidity is very high."
+
+        recommendations.append(
+            "Stay in a well-ventilated place."
+        )
+
+    elif humidity >= 60:
+
+        humidity_message = "Humidity is moderate."
+
+    else:
+
+        humidity_message = "Humidity is low."
+
+
+    # Weather condition
+
+    if "rain" in condition:
+
+        condition_message = "Rainy weather is expected."
+
+        recommendations.append(
+            "Carry an umbrella or raincoat."
+        )
+
+    elif "cloud" in condition:
+
+        condition_message = "The sky is cloudy."
+
+    elif "clear" in condition:
+
+        condition_message = "The sky is clear."
+
+    elif "thunder" in condition:
+
+        condition_message = "Thunderstorm conditions are possible."
+
+        recommendations.append(
+            "Avoid exposed outdoor areas during thunderstorms."
+        )
+
+    else:
+
+        condition_message = "Weather conditions should be monitored."
+
+
+    # Wind analysis
+
+    if wind_speed >= 10:
+
+        recommendations.append(
+            "Strong winds are present. Take care while travelling."
+        )
+
+
+    return {
+        "temperature_message": temperature_message,
+        "humidity_message": humidity_message,
+        "condition_message": condition_message,
+        "recommendations": recommendations
+    }
